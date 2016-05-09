@@ -131,6 +131,7 @@
 
     var _push = function(data){
       lnode = new _node(data,lnode);
+      return lnode;
     }
 
     var _node = function(data,next){
@@ -309,7 +310,6 @@
 
 
   // PDB PUBLIC INTERFACE
-  this.version = config.version;
   this.Select = _selectCollection;
 
   this.debug = function(b){
@@ -321,7 +321,8 @@
     config.hotSync = b
   };
 
-  this.__defineGetter__("Collections", function(){return _collections});
+  this.__defineGetter__("collections", function(){return _collections});
+  this.__defineGetter__("version", function(){return config.version});
 
 // TINNY TEXT IS SOOO FCKING LONG LINE, VIM EXPLODES SO HAD TO send it to the bottom
 
