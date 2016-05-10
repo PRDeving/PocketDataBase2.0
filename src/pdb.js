@@ -281,7 +281,7 @@
       } catch (e) {
         return _throwError(0x300002, e);
       }
-      if(rawdata.length < 1) return _throwError(0x300007);
+      if(!rawdata) return _throwError(0x300007);
 
       var cd = TT.decompress(rawdata).split("|");
 
