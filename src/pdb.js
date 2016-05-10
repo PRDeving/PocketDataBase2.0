@@ -140,15 +140,17 @@
 
       if(config.hotSync) _export(collection);
 
-      var _update = function(data){
-        if (data.length < 1) return _throwError(0x200001);
-        var d = (typeof data == "object")? JSON.stringify(data) : false;
+      var _update = function(dat){
+        if (dat.length < 1) return _throwError(0x200001);
+        for (var e in dat) this.data[e] = dat[e];
+
+        this.raw = (typeof this.data == "object")? JSON.stringify(this.data) : false;
 
         if(config.hotSync) _export(collection);
 
         // this.id = _getEntryToken(d);
-        this.data = data;
-        this.raw = d
+        // this.data = this.data;
+        // this.raw = d
       }
 
       // this.id = _getEntryToken(d) || "";
