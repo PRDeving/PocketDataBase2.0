@@ -281,7 +281,7 @@
       } catch (e) {
         return _throwError(0x300002, e);
       }
-      if(!rawdata) return _throwError(0x300007);
+      if(typeof rawdata != "string" && typeof rawdata != "number") return _throwError(0x300007);
 
       var cd = TT.decompress(rawdata).split("|");
 
@@ -291,6 +291,7 @@
       if(config.debug)
         console.log("PDB: Database imported from LocalStorage successfully in",
                   (Date.now()-init)/1000,"seconds");
+      return true;
     }
 
     this.Save = _push;
