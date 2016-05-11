@@ -210,6 +210,7 @@ Collections will be stored with the 'PDBDB_' prefix, so it can be easily identif
 
 in node enviroments a 'data/' folder will be created automaticly to store the collections.
 
+# PENDING ISSUES
 
-# ISSUES
-[0001] Import doesnt work in node
+# CLOSED ISSUES
+[0001][FIX PRDeving v2.0.2][4038313139b1851b12730b7d416e3394570d9d48] Import doesnt work in node
