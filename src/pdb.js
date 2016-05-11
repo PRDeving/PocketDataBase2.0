@@ -13,7 +13,7 @@
 
 })(typeof window !== "undefined" ? window : this, function(context) {
   var config = {
-    version: '2.0.1',
+    version: '2.0.2',
     debug: false,
     hotSync: false,
     // eventTarget: (context.document)? context.document.getElementsByTagName('body')[0]: false,
@@ -24,7 +24,7 @@
     var exportInterface = (typeof context.localStorage == 'object') ? function(n,v){context.localStorage.setItem(n,v)} : 
       ((typeof context.document == 'object' && typeof context.document.cookie == 'object') ? _setCookie : _setFS);
 
-    var importInterface = (typeof context.localStorage == 'object') ? function(n){return context.localStorage.getItem(n)} : 
+    var importInterface = (typeof context.localStorage == 'object') ? function(n,cb){cb(context.localStorage.getItem(n))} : 
       ((typeof context.document == 'object' && typeof context.document.cookie == 'object') ? _getCookie : _getFS);
   } catch(e) {
     return _throwError(0x300003, e);
@@ -87,7 +87,7 @@
     context.document.cookie = name + "=" + data + "; " + expires;
   }
 
-  function _getCookie(name) {
+  function _getCookie(name, cb) {
     var name = name + "=";
     var ca = context.document.cookie.split(';');
 
@@ -97,7 +97,7 @@
         c = c.substring(1);
       }
       if (c.indexOf(name) == 0) {
-        return c.substring(name.length,c.length);
+        cb(c.substring(name.length,c.length));
       }
     }
 
@@ -114,12 +114,12 @@
     // } else _throwError(0x300003);
   }
 
-  function _getFS(name) {
+  function _getFS(name, cb) {
     // if(context.require == 'object') {
       var fs = require('fs')
       fs.readFile('./data/' + name, 'utf8', function (e, data) {
         if (e) return _throwError(0x300005, e);
-        return data;
+        cb(data);
       });
     // } else _throwError(0x300003);
   }
@@ -279,21 +279,24 @@
         console.log("PDB: Importing, be patient, this could take several seconds...");
 
       try {
-        var rawdata = importInterface("PDBDB_" + c);
+        return importInterface("PDBDB_" + c, importCB);
       } catch (e) {
         return _throwError(0x300002, e);
       }
-      if(typeof rawdata != "string" && typeof rawdata != "number") return _throwError(0x300007);
 
-      var cd = TT.decompress(rawdata).split("|");
+      function importCB(rawdata) {
+        if(typeof rawdata != "string" && typeof rawdata != "number") return _throwError(0x300007);
 
-      for(var e in cd)
-        _push((cd[e][0] != "{" && cd[e][0] != "[") ? cd[e] : JSON.parse(cd[e]));
+        var cd = TT.decompress(rawdata).split("|");
 
-      if(config.debug)
-        console.log("PDB: Database imported from LocalStorage successfully in",
-                  (Date.now()-init)/1000,"seconds");
-      return true;
+        for(var e in cd)
+          _push((cd[e][0] != "{" && cd[e][0] != "[") ? cd[e] : JSON.parse(cd[e]));
+
+        if(config.debug)
+          console.log("PDB: Database imported from LocalStorage successfully in",
+                    (Date.now()-init)/1000,"seconds");
+        return true;
+      }
     }
 
     this.Save = _push;

@@ -1,6 +1,6 @@
 {
   "name": "pocketdatabase",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Fastest Lite NoSQL DataBase",
   "main": "build/pdb.min.js",
   "scripts": {
