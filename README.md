@@ -75,7 +75,7 @@ index.js
 # How does it work?
 PDB works with collections, collections are similar to SQL tables, it is the container of the data entries.
 If you want to store cars there would be a collection named 'cars' and entries with data:
-````json
+```json
   {
     name: "honda",
     model: "civic",
@@ -86,6 +86,7 @@ you can have as many collections as you please and as many entries as you want, 
 of ridicously large data.
 
 #USE
+
 ```javascript
   // select the collection you want to use if exists, if not it will be created
   // Select(...) returns a reference so you can select as many collections as you want and work on them simultaneosuly
